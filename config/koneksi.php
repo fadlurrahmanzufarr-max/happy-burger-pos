@@ -1,8 +1,9 @@
 <?php
+// config/koneksi.php
 $host = "localhost";
 $user = "root";
-$pass = ""; // Bawaan Laragon kosong
-$db   = "happyburger";
+$pass = ""; // kosongkan jika bawaan Laragon
+$db   = "db_happyburger"; // 👈 WAJIB DIGANTI JADI INI BIAR SINKRON
 
 $koneksi = mysqli_connect($host, $user, $pass, $db);
 

@@ -32,7 +32,7 @@ if (isset($_POST['register'])) {
   
   <link href="assets/lib/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body class="bg-warning d-flex align-items-center" style="font-family: 'Poppins', sans-serif; height: 100vh;">
+<body class="bg-danger d-flex align-items-center" style="font-family: 'Poppins', sans-serif; height: 100vh;">
   <div class="container" style="max-width: 450px;">
     <div class="card p-4 shadow-lg border-0" style="border-radius: 15px;">
       <h3 class="text-center fw-bold text-dark m-0">DAFTAR KASIR</h3>
@@ -51,8 +51,9 @@ if (isset($_POST['register'])) {
           <label class="form-label fw-bold">Konfirmasi Password</label>
           <input type="password" name="konfirmasi" class="form-control" required placeholder="Ulangi password...">
         </div>
-        <button type="submit" name="register" class="btn btn-warning text-dark fw-bold w-100 py-2 mb-3" style="border-radius: 8px;">DAFTAR AKUN</button>
-        <p class="text-center small text-muted m-0">Sudah punya akun? <a href="login.php" class="text-warning fw-bold text-decoration-none">Login di sini</a></p>
+        
+        <button type="submit" name="register" class="btn btn-danger fw-bold w-100 py-2 mb-3" style="border-radius: 8px;">DAFTAR AKUN</button>
+        <p class="text-center small text-muted m-0">Sudah punya akun? <a href="login.php" class="text-danger fw-bold text-decoration-none">Login di sini</a></p>
       </form>
     </div>
   </div>
