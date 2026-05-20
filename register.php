@@ -2,21 +2,23 @@
 include 'config/koneksi.php';
 
 if (isset($_POST['register'])) {
-    $username = mysqli_real_escape_string($koneksi, $_POST['username']);
-    $password = $_POST['password'];
-    
-    $password_hashed = password_hash($password, PASSWORD_DEFAULT);
+    $username = strtolower(stripslashes($_POST['username']));
+    $password = mysqli_real_escape_string($koneksi, $_POST['password']);
+    $konfirmasi = mysqli_real_escape_string($koneksi, $_POST['konfirmasi']);
 
-    $cek_user = mysqli_query($koneksi, "SELECT * FROM users WHERE username = '$username'");
-    if (mysqli_num_rows($cek_user) > 0) {
-        echo "<script>alert('Username sudah digunakan! Cari nama lain.');</script>";
+    // Cek username sudah ada atau belum
+    $cek = mysqli_query($koneksi, "SELECT username FROM user WHERE username = '$username'");
+    if (mysqli_fetch_assoc($cek)) {
+        echo "<script>alert('Username sudah terdaftar!');</script>";
     } else {
-        $query = "INSERT INTO users (username, password) VALUES ('$username', '$password_hashed')";
-        if (mysqli_query($koneksi, $query)) {
-            echo "<script>alert('Registrasi akun berhasil! Silakan login.'); window.location='login.php';</script>";
-            exit;
+        if ($password !== $konfirmasi) {
+            echo "<script>alert('Konfirmasi password tidak cocok!');</script>";
         } else {
-            echo "<script>alert('Registrasi gagal!');</script>";
+            // Enkripsi password dengan Bcrypt bawaan PHP
+            $password_aman = password_hash($password, PASSWORD_DEFAULT);
+            mysqli_query($koneksi, "INSERT INTO user (username, password) VALUES ('$username', '$password_aman')");
+            echo "<script>alert('Kasir baru berhasil didaftarkan! Silakan login.'); window.location='login.php';</script>";
+            exit;
         }
     }
 }
@@ -24,64 +26,35 @@ if (isset($_POST['register'])) {
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daftar Akun - Happy Burger</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    <style>
-        body { 
-            font-family: 'Poppins', sans-serif; 
-            /* BACKGROUND BURGER THEME DENGAN OVERLAY MERAH GRADIENT */
-            background: linear-gradient(rgba(178, 31, 45, 0.7), rgba(220, 53, 69, 0.6)), 
-                        url('https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=1000&auto=format&fit=crop') no-repeat center center fixed;
-            background-size: cover;
-        }
-        .card-register { 
-            background: rgba(255, 255, 255, 0.95); 
-            border: none; 
-            border-top: 5px solid #dc3545; 
-            border-radius: 16px; 
-        }
-        .btn-danger-kfc { 
-            background-color: #dc3545; 
-            border: none; 
-            font-weight: 600; 
-        }
-        .btn-danger-kfc:hover { 
-            background-color: #b21f2d; 
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Register Kasir - Happy Burger</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <link href="assets/lib/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body class="d-flex align-items-center justify-content-center" style="min-height: 100vh;">
-    
-    <div class="card-register p-4 shadow-lg">
-            <h4 class="fw-bold text-dark mb-4 text-center">Buat Akun Baru</h4>
-            
-            <form action="" method="POST">
-                <div class="mb-3">
-                    <label class="form-label small fw-bold text-secondary">Buat Username</label>
-                    <div class="input-group">
-                        <span class="input-group-text bg-light text-muted"><i class="bi bi-person-plus"></i></span>
-                        <input type="text" name="username" class="form-control" placeholder="Username baru" required>
-                    </div>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label small fw-bold text-secondary">Buat Password</label>
-                    <div class="input-group">
-                        <span class="input-group-text bg-light text-muted"><i class="bi bi-lock-fill"></i></span>
-                        <input type="password" name="password" class="form-control" placeholder="Password rahasia" required>
-                    </div>
-                </div>
-                <button type="submit" name="register" class="btn btn-danger-kfc w-100 py-2 text-white shadow-sm mt-2">DAFTAR SEKARANG <i class="bi bi-check-circle"></i></button>
-            </form>
-            
-            <div class="text-center mt-4 border-top pt-3">
-                <p class="small text-muted mb-0">Sudah punya akun? <a href="login.php" class="text-danger fw-bold text-decoration-none">Login di sini</a></p>
-            </div>
-        </div>
-    </div>
+<body class="bg-warning d-flex align-items-center" style="font-family: 'Poppins', sans-serif; height: 100vh;">
+  <div class="container" style="max-width: 450px;">
+    <div class="card p-4 shadow-lg border-0" style="border-radius: 15px;">
+      <h3 class="text-center fw-bold text-dark m-0">DAFTAR KASIR</h3>
+      <p class="text-center text-muted small mb-4">Buat akun untuk akses sistem POS</p>
 
+      <form action="" method="POST">
+        <div class="mb-3">
+          <label class="form-label fw-bold">Username</label>
+          <input type="text" name="username" class="form-control" required placeholder="Buat username baru...">
+        </div>
+        <div class="mb-3">
+          <label class="form-label fw-bold">Password</label>
+          <input type="password" name="password" class="form-control" required placeholder="Buat password minimal 1 huruf/angka...">
+        </div>
+        <div class="mb-4">
+          <label class="form-label fw-bold">Konfirmasi Password</label>
+          <input type="password" name="konfirmasi" class="form-control" required placeholder="Ulangi password...">
+        </div>
+        <button type="submit" name="register" class="btn btn-warning text-dark fw-bold w-100 py-2 mb-3" style="border-radius: 8px;">DAFTAR AKUN</button>
+        <p class="text-center small text-muted m-0">Sudah punya akun? <a href="login.php" class="text-warning fw-bold text-decoration-none">Login di sini</a></p>
+      </form>
+    </div>
+  </div>
 </body>
 </html>
