@@ -3,31 +3,18 @@ session_start();
 if (!isset($_SESSION['login'])) { header("Location: ../login.php"); exit; }
 include '../config/koneksi.php';
 
-// Logic Tambah Ke Keranjang Session jika tombol di klik
 if (isset($_GET['aksi']) && $_GET['aksi'] == 'tambah_keranjang') {
     $id_bgr = $_GET['id'];
     $res_bgr = mysqli_query($koneksi, "SELECT * FROM menu_burger WHERE id_burger = $id_bgr");
     $data_bgr = mysqli_fetch_assoc($res_bgr);
-    
     if ($data_bgr) {
-        if (!isset($_SESSION['cart'])) {
-            $_SESSION['cart'] = [];
-        }
-        
-        if (isset($_SESSION['cart'][$id_bgr])) {
-            $_SESSION['cart'][$id_bgr]['qty']++;
-        } else {
-            $_SESSION['cart'][$id_bgr] = [
-                'nama' => $data_bgr['nama_burger'],
-                'harga' => $data_bgr['harga'],
-                'qty' => 1
-            ];
-        }
+        if (!isset($_SESSION['cart'])) { $_SESSION['cart'] = []; }
+        if (isset($_SESSION['cart'][$id_bgr])) { $_SESSION['cart'][$id_bgr]['qty']++; } 
+        else { $_SESSION['cart'][$id_bgr] = ['nama' => $data_bgr['nama_burger'], 'harga' => $data_bgr['harga'], 'qty' => 1]; }
     }
     echo "<script>alert('Menu berhasil dimasukkan ke keranjang!'); window.location='dashboard.php';</script>";
     exit;
 }
-
 $query = mysqli_query($koneksi, "SELECT * FROM menu_burger ORDER BY id_burger DESC");
 ?>
 <!DOCTYPE html>
@@ -36,8 +23,10 @@ $query = mysqli_query($koneksi, "SELECT * FROM menu_burger ORDER BY id_burger DE
   <meta charset="UTF-8">
   <title>Katalog - Happy Burger</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+  
+  <link href="../assets/lib/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../assets/lib/css/bootstrap-icons.min.css" rel="stylesheet">
+  
   <style>
     body { font-family: 'Poppins', sans-serif; background-color: #f8f9fa; }
     .nav-link-custom { color: rgba(255,255,255,0.75); font-weight: 500; text-decoration: none; padding: 8px 12px; }
@@ -46,7 +35,6 @@ $query = mysqli_query($koneksi, "SELECT * FROM menu_burger ORDER BY id_burger DE
   </style>
 </head>
 <body class="bg-light">
-
   <nav class="navbar navbar-expand navbar-dark bg-danger mb-4 py-3 shadow-sm">
     <div class="container">
       <a class="navbar-brand fw-bold fs-4" href="dashboard.php">HAPPY BURGER</a>
@@ -62,23 +50,17 @@ $query = mysqli_query($koneksi, "SELECT * FROM menu_burger ORDER BY id_burger DE
       </div>
     </div>
   </nav>
-
   <div class="container my-4" style="max-width: 900px;">
     <h4 class="fw-bold mb-3 text-dark">Katalog Menu Burger</h4>
     <div class="row g-3">
       <?php while ($row = mysqli_fetch_assoc($query)): ?>
         <div class="col-md-4">
           <div class="card p-3 shadow-sm border-0 h-100" style="border-radius: 10px;">
-            
-            <?php 
-              $gambar = (!empty($row['foto'])) ? $row['foto'] : 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=500';
-            ?>
+            <?php $gambar = (!empty($row['foto'])) ? $row['foto'] : 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=500'; ?>
             <img src="<?= $gambar; ?>" class="w-100 img-burger mb-3" alt="Burger">
-
             <h5 class="fw-bold m-0 text-dark"><?= $row['nama_burger']; ?></h5>
             <h6 class="text-danger fw-bold my-2">Rp <?= number_format($row['harga'], 0, ',', '.'); ?></h6>
             <p class="text-muted small mb-3"><?= $row['deskripsi']; ?></p>
-            
             <a href="dashboard.php?aksi=tambah_keranjang&id=<?= $row['id_burger']; ?>" class="btn btn-danger btn-sm w-100 fw-bold py-2" style="border-radius: 8px;">+ Masukkan Keranjang</a>
           </div>
         </div>
@@ -87,6 +69,5 @@ $query = mysqli_query($koneksi, "SELECT * FROM menu_burger ORDER BY id_burger DE
       <?php endif; ?>
     </div>
   </div>
-
 </body>
 </html>

@@ -2,7 +2,6 @@
 session_start();
 if (!isset($_SESSION['login'])) { header("Location: ../login.php"); exit; }
 include '../config/koneksi.php';
-
 $query_transaksi = mysqli_query($koneksi, "SELECT * FROM transaksi ORDER BY id_transaksi DESC");
 ?>
 <!DOCTYPE html>
@@ -11,7 +10,9 @@ $query_transaksi = mysqli_query($koneksi, "SELECT * FROM transaksi ORDER BY id_t
   <meta charset="UTF-8">
   <title>Transaksi - Happy Burger</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <link href="../assets/lib/css/bootstrap.min.css" rel="stylesheet">
+  
   <style>
     body { font-family: 'Poppins', sans-serif; background-color: #f8f9fa; }
     .nav-link-custom { color: rgba(255,255,255,0.75); font-weight: 500; text-decoration: none; padding: 8px 12px; }
@@ -19,7 +20,6 @@ $query_transaksi = mysqli_query($koneksi, "SELECT * FROM transaksi ORDER BY id_t
   </style>
 </head>
 <body class="bg-light">
-
   <nav class="navbar navbar-expand navbar-dark bg-danger mb-4 py-3 shadow-sm">
     <div class="container">
       <a class="navbar-brand fw-bold fs-4" href="dashboard.php">HAPPY BURGER</a>
@@ -35,7 +35,6 @@ $query_transaksi = mysqli_query($koneksi, "SELECT * FROM transaksi ORDER BY id_t
       </div>
     </div>
   </nav>
-
   <div class="container my-4" style="max-width: 900px;">
     <h4 class="fw-bold mb-3 text-dark">Informasi Transaksi Penjualan</h4>
     <div class="card p-3 shadow-sm border-0" style="border-radius: 10px;">
@@ -63,6 +62,5 @@ $query_transaksi = mysqli_query($koneksi, "SELECT * FROM transaksi ORDER BY id_t
       </table>
     </div>
   </div>
-
 </body>
 </html>

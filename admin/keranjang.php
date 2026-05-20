@@ -3,13 +3,11 @@ session_start();
 if (!isset($_SESSION['login'])) { header("Location: ../login.php"); exit; }
 include '../config/koneksi.php';
 
-// Logika Kosongkan Keranjang jika tombolnya diklik
 if (isset($_GET['aksi']) && $_GET['aksi'] == 'kosongkan') {
     $_SESSION['cart'] = [];
     header("Location: keranjang.php");
     exit;
 }
-
 $grand_total = 0;
 ?>
 <!DOCTYPE html>
@@ -17,18 +15,25 @@ $grand_total = 0;
 <head>
   <meta charset="UTF-8">
   <title>Keranjang - Happy Burger</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <link href="../assets/lib/css/bootstrap.min.css" rel="stylesheet">
+  
+  <style>
+    body { font-family: 'Poppins', sans-serif; background-color: #f8f9fa; }
+    .nav-link-custom { color: rgba(255,255,255,0.75); font-weight: 500; text-decoration: none; padding: 8px 12px; }
+    .nav-link-custom:hover, .nav-link-custom.active { color: #ffffff !important; font-weight: 700; }
+  </style>
 </head>
 <body class="bg-light">
-
   <nav class="navbar navbar-expand navbar-dark bg-danger mb-4 py-3 shadow-sm">
     <div class="container">
       <a class="navbar-brand fw-bold fs-4" href="dashboard.php">HAPPY BURGER</a>
       <div class="navbar-nav me-auto flex-row gap-3 ms-3">
-        <a class="nav-link-custom text-white-50 text-decoration-none" href="dashboard.php">Katalog Toko</a>
-        <a class="nav-link-custom text-white-50 text-decoration-none" href="managemen_produk.php">Managemen Produk</a>
-        <a class="nav-link-custom text-white fw-bold text-decoration-none" href="keranjang.php">Keranjang</a>
-        <a class="nav-link-custom text-white-50 text-decoration-none" href="info_transaksi.php">Info Transaksi</a>
+        <a class="nav-link-custom" href="dashboard.php">Katalog Toko</a>
+        <a class="nav-link-custom" href="managemen_produk.php">Managemen Produk</a>
+        <a class="nav-link-custom active" href="keranjang.php">Keranjang</a>
+        <a class="nav-link-custom" href="info_transaksi.php">Info Transaksi</a>
       </div>
       <div class="navbar-nav ms-auto align-items-center gap-3">
         <span class="text-white small">Halo, <strong class="text-warning"><?= ucwords($_SESSION['username']); ?></strong></span>
@@ -36,7 +41,6 @@ $grand_total = 0;
       </div>
     </div>
   </nav>
-
   <div class="container my-4" style="max-width: 900px;">
     <div class="d-flex justify-content-between align-items-center mb-3">
       <h4 class="fw-bold m-0 text-dark">Keranjang Belanja Kasir</h4>
@@ -44,7 +48,6 @@ $grand_total = 0;
         <a href="keranjang.php?aksi=kosongkan" class="btn btn-sm btn-outline-danger fw-bold">Kosongkan Keranjang</a>
       <?php endif; ?>
     </div>
-
     <div class="card p-3 shadow-sm border-0" style="border-radius: 10px;">
       <table class="table table-bordered table-striped m-0 text-center align-middle">
         <thead class="table-danger">
@@ -74,7 +77,6 @@ $grand_total = 0;
         </tbody>
       </table>
     </div>
-
     <?php if ($grand_total > 0): ?>
       <div class="card p-4 mt-3 bg-white shadow-sm border-0 d-flex flex-md-row justify-content-between align-items-center" style="border-radius: 10px;">
         <div>
@@ -91,8 +93,6 @@ $grand_total = 0;
         </form>
       </div>
     <?php endif; ?>
-
   </div>
-
 </body>
 </html>

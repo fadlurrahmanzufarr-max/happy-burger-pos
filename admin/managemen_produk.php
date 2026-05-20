@@ -2,7 +2,6 @@
 session_start();
 if (!isset($_SESSION['login'])) { header("Location: ../login.php"); exit; }
 include '../config/koneksi.php';
-
 $query = mysqli_query($koneksi, "SELECT * FROM menu_burger ORDER BY id_burger DESC");
 ?>
 <!DOCTYPE html>
@@ -11,7 +10,9 @@ $query = mysqli_query($koneksi, "SELECT * FROM menu_burger ORDER BY id_burger DE
   <meta charset="UTF-8">
   <title>Managemen - Happy Burger</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <link href="../assets/lib/css/bootstrap.min.css" rel="stylesheet">
+  
   <style>
     body { font-family: 'Poppins', sans-serif; background-color: #f8f9fa; }
     .nav-link-custom { color: rgba(255,255,255,0.75); font-weight: 500; text-decoration: none; padding: 8px 12px; }
@@ -19,7 +20,6 @@ $query = mysqli_query($koneksi, "SELECT * FROM menu_burger ORDER BY id_burger DE
   </style>
 </head>
 <body class="bg-light">
-
   <nav class="navbar navbar-expand navbar-dark bg-danger mb-4 py-3 shadow-sm">
     <div class="container">
       <a class="navbar-brand fw-bold fs-4" href="dashboard.php">HAPPY BURGER</a>
@@ -35,13 +35,11 @@ $query = mysqli_query($koneksi, "SELECT * FROM menu_burger ORDER BY id_burger DE
       </div>
     </div>
   </nav>
-
   <div class="container my-4" style="max-width: 900px;">
     <div class="d-flex justify-content-between align-items-center mb-3">
       <h4 class="fw-bold m-0 text-dark">Managemen Produk Burger</h4>
       <a href="tambah_burger.php" class="btn btn-sm btn-danger fw-bold px-3 py-2" style="border-radius: 8px;">+ Tambah Menu</a>
     </div>
-
     <div class="card p-3 shadow-sm border-0" style="border-radius: 10px;">
       <table class="table table-bordered table-striped m-0 text-center align-middle">
         <thead class="table-danger">
@@ -70,6 +68,5 @@ $query = mysqli_query($koneksi, "SELECT * FROM menu_burger ORDER BY id_burger DE
       </table>
     </div>
   </div>
-
 </body>
 </html>
