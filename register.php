@@ -6,7 +6,6 @@ if (isset($_POST['register'])) {
     $password = mysqli_real_escape_string($koneksi, $_POST['password']);
     $konfirmasi = mysqli_real_escape_string($koneksi, $_POST['konfirmasi']);
 
-    // Cek username sudah ada atau belum
     $cek = mysqli_query($koneksi, "SELECT username FROM user WHERE username = '$username'");
     if (mysqli_fetch_assoc($cek)) {
         echo "<script>alert('Username sudah terdaftar!');</script>";
@@ -14,7 +13,6 @@ if (isset($_POST['register'])) {
         if ($password !== $konfirmasi) {
             echo "<script>alert('Konfirmasi password tidak cocok!');</script>";
         } else {
-            // Enkripsi password dengan Bcrypt bawaan PHP
             $password_aman = password_hash($password, PASSWORD_DEFAULT);
             mysqli_query($koneksi, "INSERT INTO user (username, password) VALUES ('$username', '$password_aman')");
             echo "<script>alert('Kasir baru berhasil didaftarkan! Silakan login.'); window.location='login.php';</script>";
@@ -29,7 +27,6 @@ if (isset($_POST['register'])) {
   <meta charset="UTF-8">
   <title>Register Kasir - Happy Burger</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  
   <link href="assets/lib/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="bg-danger d-flex align-items-center" style="font-family: 'Poppins', sans-serif; height: 100vh;">
@@ -45,13 +42,12 @@ if (isset($_POST['register'])) {
         </div>
         <div class="mb-3">
           <label class="form-label fw-bold">Password</label>
-          <input type="password" name="password" class="form-control" required placeholder="Buat password minimal 1 huruf/angka...">
+          <input type="password" name="password" class="form-control" required placeholder="Buat password...">
         </div>
         <div class="mb-4">
           <label class="form-label fw-bold">Konfirmasi Password</label>
           <input type="password" name="konfirmasi" class="form-control" required placeholder="Ulangi password...">
         </div>
-        
         <button type="submit" name="register" class="btn btn-danger fw-bold w-100 py-2 mb-3" style="border-radius: 8px;">DAFTAR AKUN</button>
         <p class="text-center small text-muted m-0">Sudah punya akun? <a href="login.php" class="text-danger fw-bold text-decoration-none">Login di sini</a></p>
       </form>

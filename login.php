@@ -3,7 +3,7 @@ session_start();
 include 'config/koneksi.php';
 
 if (isset($_SESSION['login'])) {
-    header("Location: admin/dashboard.php");
+    header("Location: dashboard.php");
     exit;
 }
 
@@ -18,7 +18,7 @@ if (isset($_POST['login'])) {
             $_SESSION['login'] = true;
             $_SESSION['id_user'] = $row['id_user'];
             $_SESSION['username'] = $row['username'];
-            header("Location: admin/dashboard.php");
+            header("Location: dashboard.php");
             exit;
         }
     }
@@ -31,7 +31,6 @@ if (isset($_POST['login'])) {
   <meta charset="UTF-8">
   <title>Login Kasir - Happy Burger</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  
   <link href="assets/lib/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="bg-danger d-flex align-items-center" style="font-family: 'Poppins', sans-serif; height: 100vh;">
